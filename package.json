@@ -1,0 +1,14 @@
+{
+  "name": "moral-injury-daily-report",
+  "version": "1.0.0",
+  "description": "Moral Injury Research Daily Report - 道德創傷研究文獻日報",
+  "type": "module",
+  "scripts": {
+    "fetch": "node src/fetch_papers.mjs",
+    "report": "node src/generate_report.mjs",
+    "index": "node src/generate_index.mjs"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}
