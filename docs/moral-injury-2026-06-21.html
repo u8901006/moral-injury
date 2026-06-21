@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Moral Injury Research &middot; 道德創傷研究文獻日報 &middot; 2026年6月21日</title>
+<meta name="description" content="2026年6月21日 道德創傷研究文獻日報，由 AI 自動彙整 PubMed 最新論文"/>
+<style>
+  :root { --bg: #f6f1e8; --surface: #fffaf2; --line: #d8c5ab; --text: #2b2118; --muted: #766453; --accent: #8c4f2b; --accent-soft: #ead2bf; --card-bg: color-mix(in srgb, var(--surface) 92%, white); }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: radial-gradient(circle at top, #fff6ea 0, var(--bg) 55%, #ead8c6 100%); color: var(--text); font-family: "Noto Sans TC", "PingFang TC", "Helvetica Neue", Arial, sans-serif; min-height: 100vh; overflow-x: hidden; }
+  .container { position: relative; z-index: 1; max-width: 880px; margin: 0 auto; padding: 60px 32px 80px; }
+  header { display: flex; align-items: center; gap: 16px; margin-bottom: 52px; animation: fadeDown 0.6s ease both; }
+  .logo { width: 48px; height: 48px; border-radius: 14px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; box-shadow: 0 4px 20px rgba(140,79,43,0.25); }
+  .header-text h1 { font-size: 22px; font-weight: 700; color: var(--text); letter-spacing: -0.3px; }
+  .header-meta { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; align-items: center; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; letter-spacing: 0.3px; }
+  .badge-date { background: var(--accent-soft); border: 1px solid var(--line); color: var(--accent); }
+  .badge-count { background: rgba(140,79,43,0.06); border: 1px solid var(--line); color: var(--muted); }
+  .badge-source { background: transparent; color: var(--muted); font-size: 11px; padding: 0 4px; }
+  .summary-card { background: var(--card-bg); border: 1px solid var(--line); border-radius: 24px; padding: 28px 32px; margin-bottom: 32px; box-shadow: 0 20px 60px rgba(61,36,15,0.06); animation: fadeUp 0.5s ease 0.1s both; }
+  .summary-card h2 { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.6px; color: var(--accent); margin-bottom: 16px; }
+  .summary-text { font-size: 15px; line-height: 1.8; color: var(--text); }
+  .section { margin-bottom: 36px; animation: fadeUp 0.5s ease both; }
+  .section-title { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+  .section-icon { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; background: var(--accent-soft); }
+  .news-card { background: var(--card-bg); border: 1px solid var(--line); border-radius: 24px; padding: 22px 26px; margin-bottom: 12px; box-shadow: 0 8px 30px rgba(61,36,15,0.04); transition: background 0.2s, border-color 0.2s, transform 0.2s; }
+  .news-card:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(61,36,15,0.08); }
+  .news-card.featured { border-left: 3px solid var(--accent); }
+  .news-card.featured:hover { border-color: var(--accent); }
+  .card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .rank-badge { background: var(--accent); color: #fff7f0; font-weight: 700; font-size: 12px; padding: 2px 8px; border-radius: 6px; }
+  .emoji-icon { font-size: 18px; }
+  .card-header-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .emoji-sm { font-size: 14px; }
+  .news-card h3 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 8px; line-height: 1.5; }
+  .journal-source { font-size: 12px; color: var(--accent); margin-bottom: 8px; opacity: 0.8; }
+  .news-card p { font-size: 13.5px; line-height: 1.75; color: var(--muted); }
+  .card-footer { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .tag { padding: 2px 9px; background: var(--accent-soft); border-radius: 999px; font-size: 11px; color: var(--accent); }
+  .news-card a { font-size: 12px; color: var(--accent); text-decoration: none; opacity: 0.7; margin-left: auto; }
+  .news-card a:hover { opacity: 1; }
+  .utility-high { color: #5a7a3a; font-size: 11px; font-weight: 600; padding: 2px 8px; background: rgba(90,122,58,0.1); border-radius: 4px; }
+  .utility-mid { color: #9f7a2e; font-size: 11px; font-weight: 600; padding: 2px 8px; background: rgba(159,122,46,0.1); border-radius: 4px; }
+  .utility-low { color: var(--muted); font-size: 11px; font-weight: 600; padding: 2px 8px; background: rgba(118,100,83,0.08); border-radius: 4px; }
+  .utility-sm { font-size: 10px; }
+  .pico-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; padding: 12px; background: rgba(255,253,249,0.8); border-radius: 14px; border: 1px solid var(--line); }
+  .pico-item { display: flex; gap: 8px; align-items: baseline; }
+  .pico-label { font-size: 10px; font-weight: 700; color: #fff7f0; background: var(--accent); padding: 2px 6px; border-radius: 4px; flex-shrink: 0; }
+  .pico-text { font-size: 12px; color: var(--muted); line-height: 1.4; }
+  .keywords-section { margin-bottom: 36px; }
+  .keywords { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .keyword { padding: 5px 14px; background: var(--accent-soft); border: 1px solid var(--line); border-radius: 20px; font-size: 12px; color: var(--accent); cursor: default; transition: background 0.2s; }
+  .keyword:hover { background: rgba(140,79,43,0.18); }
+  .topic-section { margin-bottom: 36px; }
+  .topic-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .topic-name { font-size: 13px; color: var(--muted); width: 100px; flex-shrink: 0; text-align: right; }
+  .topic-bar-bg { flex: 1; height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
+  .topic-bar { height: 100%; background: linear-gradient(90deg, var(--accent), #c47a4a); border-radius: 4px; transition: width 0.6s ease; }
+  .topic-count { font-size: 12px; color: var(--accent); width: 24px; }
+  .footer-links { margin-top: 48px; animation: fadeUp 0.5s ease 0.3s both; }
+  .footer-links-grid { display: grid; gap: 12px; }
+  .footer-link-card { display: flex; align-items: center; gap: 14px; padding: 18px 24px; background: var(--card-bg); border: 1px solid var(--line); border-radius: 24px; text-decoration: none; color: var(--text); transition: all 0.2s; box-shadow: 0 8px 30px rgba(61,36,15,0.04); }
+  .footer-link-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(61,36,15,0.08); }
+  .footer-link-icon { font-size: 28px; flex-shrink: 0; }
+  .footer-link-text { flex: 1; }
+  .footer-link-title { font-size: 15px; font-weight: 700; color: var(--text); }
+  .footer-link-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .footer-link-arrow { font-size: 18px; color: var(--accent); font-weight: 700; }
+  footer { margin-top: 32px; padding-top: 22px; border-top: 1px solid var(--line); font-size: 11.5px; color: var(--muted); display: flex; justify-content: space-between; animation: fadeUp 0.5s ease 0.5s both; }
+  footer a { color: var(--muted); text-decoration: none; }
+  footer a:hover { color: var(--accent); }
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  @media (max-width: 600px) { .container { padding: 36px 18px 60px; } .summary-card, .news-card { padding: 20px 18px; } .pico-grid { grid-template-columns: 1fr; } footer { flex-direction: column; gap: 6px; text-align: center; } .topic-name { width: 70px; font-size: 11px; } .footer-link-card { padding: 14px 18px; } }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="logo">🛡️</div>
+    <div class="header-text">
+      <h1>Moral Injury Research &middot; 道德創傷研究文獻日報</h1>
+      <div class="header-meta">
+        <span class="badge badge-date">📅 2026年6月21日（週日）</span>
+        <span class="badge badge-count">📊 17 篇文獻</span>
+        <span class="badge badge-source">Powered by PubMed + Zhipu AI</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="summary-card">
+    <h2>📋 今日文獻趨勢</h2>
+    <p class="summary-text">今日文獻顯示道德創傷研究正從單一症狀描述邁向多維度深化，亮點包括DSM-5-TR Z代碼對道德創傷與PTSD的鑑別診斷框架、德語版測量工具的跨文化驗證，以及從軍事場域大幅擴展至醫療、社會工作等平民高風險職業群體。</p>
+  </div>
+
+  <div class="section"><div class="section-title"><span class="section-icon">⭐</span>今日精選 TOP Picks</div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#1</span>
+            <span class="emoji-icon">🧭</span>
+            <span class="utility-high">高實用性</span>
+          </div>
+          <h3>區分道德創傷與創傷後壓力症：DSM-5-TR道德問題Z代碼的意涵</h3>
+          <p class="journal-source">Journal of Traumatic Stress &middot; Differentiating moral injury from posttraumatic stress disorder: Implications of the DSM-5-TR moral problems Z-code.</p>
+          <p>透過DSM-5-TR新設的「道德、宗教或靈性問題」Z代碼，提出以道德認同為核心中介變項的框架，精確區分道德創傷與恐懼為基礎的PTSD，對臨床評估與治療方向具有劃時代意義。</p>
+          
+        <div class="pico-grid">
+          <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">道德創傷患者與創傷後壓力症患者</span></div>
+          <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">DSM-5-TR道德問題Z代碼診斷框架</span></div>
+          <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">傳統PTSD恐懼為基礎的創傷模型</span></div>
+          <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">提升道德創傷的概念精確性、鑑別診斷能力及整合靈性與關係維度於創傷照護</span></div>
+        </div>
+          <div class="card-footer">
+            <span class="tag">道德創傷</span><span class="tag">PTSD</span><span class="tag">測量工具</span><span class="tag">羞恥/罪惡感</span><span class="tag">靈性/宗教</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42304635/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#2</span>
+            <span class="emoji-icon">📐</span>
+            <span class="utility-high">高實用性</span>
+          </div>
+          <h3>德國高風險群體道德創傷結果與困擾的測量：驗證研究</h3>
+          <p class="journal-source">Assessment &middot; Measuring Moral Injury Outcome and Distress in High-Risk Populations in Germany: A Validation Study.</p>
+          <p>在364名德語系高風險職業群體中驗證MIOS與MIDS量表，確認兩者具有良好的心理計量品質，約75%受試者曾經歷潛在道德創傷事件，為歐洲道德創傷研究提供關鍵測量基礎。</p>
+          
+        <div class="pico-grid">
+          <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">德語系高風險職業群體（法律、醫療、軍事、安全、社會、新聞領域，N=364）</span></div>
+          <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">MIOS（道德創傷結果量表）與MIDS（道德創傷與困擾量表）德文版</span></div>
+          <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">無對照組（心理計量驗證研究）</span></div>
+          <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">量表內部一致性、因子效度、收斂效度與區辨效度；PMIE暴露率與臨床顯著道德創傷篩檢陽性率</span></div>
+        </div>
+          <div class="card-footer">
+            <span class="tag">道德創傷</span><span class="tag">測量工具</span><span class="tag">醫療人員</span><span class="tag">軍事/退伍軍人</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42316824/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#3</span>
+            <span class="emoji-icon">🔄</span>
+            <span class="utility-high">高實用性</span>
+          </div>
+          <h3>背叛作為後果與催化劑：持續衝突中與PTSD和憂鬱症的縱向關係</h3>
+          <p class="journal-source">Journal of Affective Disorders &middot; Betrayal as consequence and catalyst: Longitudinal and reciprocal relations with PTSD and depression during ongoing conflict.</p>
+          <p>針對685名以色列衝突地區平民的三波縱向追蹤發現，背叛感與PTSD及憂鬱症存在雙向關聯，高暴露者背叛感更強烈預測PTSD，低暴露者則與憂鬱症關聯更密，揭示背叛在道德創傷中的核心驅動角色。</p>
+          
+        <div class="pico-grid">
+          <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">居住於以色列衝突地區的平民成人（N=685）</span></div>
+          <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">無（觀察性縱向研究）</span></div>
+          <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">高戰爭創傷暴露組 vs 低戰爭創傷暴露組</span></div>
+          <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">背叛相關道德創傷與PTSD症狀、憂鬱症狀的雙向預測關係（基線、30天、90天）</span></div>
+        </div>
+          <div class="card-footer">
+            <span class="tag">道德創傷</span><span class="tag">PTSD</span><span class="tag">憂鬱症</span><span class="tag">背叛</span><span class="tag">難民/戰爭</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/41921878/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#4</span>
+            <span class="emoji-icon">🏥</span>
+            <span class="utility-high">高實用性</span>
+          </div>
+          <h3>「他們等我們崩潰了才願意聽」：加拿大BC省醫療人員對緩解道德困擾的看法</h3>
+          <p class="journal-source">Primary Health Care Research & Development &middot; 'They're waiting for us to break before they listen': healthcare workers' perspectives on how to mitigate moral distress in British Columbia, Canada.</p>
+          <p>以社會生態框架歸納出基層醫療人員提出的四層級道德困擾緩解策略，強調單靠個人層面應對不足，必須同步推動組織與系統層面的結構改革，才能有效改善醫療環境。</p>
+          
+        <div class="pico-grid">
+          <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">加拿大BC省基層醫療專業人員（醫師、護理人員、居家照護員、長期照護員）</span></div>
+          <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">多層次道德困擾緩解策略（個人、人際、組織/社區、社會/系統四層級）</span></div>
+          <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">無對照組（質性研究）</span></div>
+          <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">歸納出涵蓋四個層級的緩解策略框架，識別系統性結構改革需求</span></div>
+        </div>
+          <div class="card-footer">
+            <span class="tag">道德創傷</span><span class="tag">醫療人員</span><span class="tag">職場倫理</span><span class="tag">質性研究</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42316888/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#5</span>
+            <span class="emoji-icon">🎖️</span>
+            <span class="utility-mid">中實用性</span>
+          </div>
+          <h3>丹麥軍事退伍軍人的道德創傷、PTSD與敘事認同</h3>
+          <p class="journal-source">Social Science & Medicine (1982) &middot; Moral injury, PTSD and narrative identity among Danish military veterans.</p>
+          <p>透過35名丹麥退伍軍人的深度訪談，以敘事認同理論揭示道德創傷損害認同的兩種路徑：認同破損與透過新社會實踐重塑敘事認同，為道德創傷的認同修復治療提供理論基礎。</p>
+          
+        <div class="pico-grid">
+          <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">丹麥軍事退伍軍人（N=35，曾派駐巴爾幹與阿富汗）</span></div>
+          <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">無（質性研究）</span></div>
+          <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">無對照組</span></div>
+          <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">道德創傷經驗損害認同的兩種過程：認同破損路徑與敘事認同重塑路徑</span></div>
+        </div>
+          <div class="card-footer">
+            <span class="tag">道德創傷</span><span class="tag">PTSD</span><span class="tag">軍事/退伍軍人</span><span class="tag">羞恥/罪惡感</span><span class="tag">質性研究</span><span class="tag">道德修復</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42166874/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#6</span>
+            <span class="emoji-icon">🔧</span>
+            <span class="utility-mid">中實用性</span>
+          </div>
+          <h3>「系統中的一顆齒輪，一個故障的系統」：英格蘭社會工作者的道德創傷經驗</h3>
+          <p class="journal-source">International Journal of Qualitative Studies on Health and Well-being &middot; "Part of a cog, of a system; a system that's broken": social workers' experiences of moral injury in England.</p>
+          <p>首度深入探索英格蘭成人服務社會工作者的道德創傷經驗，發現主要源於在資源受限與制度約束下無法踐行專業價值，目睹去人性化的低品質照護是最大的道德創傷來源。</p>
+          
+        <div class="pico-grid">
+          <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">英格蘭成人服務社會工作者（N=10）</span></div>
+          <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">無（質性描述性研究）</span></div>
+          <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">無對照組</span></div>
+          <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">識別出系統層面、服務層面及個人心理層面三類道德創傷影響</span></div>
+        </div>
+          <div class="card-footer">
+            <span class="tag">道德創傷</span><span class="tag">社會工作</span><span class="tag">制度性背叛</span><span class="tag">質性研究</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/41851959/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#7</span>
+            <span class="emoji-icon">📚</span>
+            <span class="utility-mid">中實用性</span>
+          </div>
+          <h3>醫學生的耗竭、韌性與學習代價：以專業認同形塑理論為基礎的範圍回顧</h3>
+          <p class="journal-source">Medical Teacher &middot; Burnout, resilience, and the cost of learning in medical students: A scoping review informed by professional identity formation theory.</p>
+          <p>以「學習代價」概念擴展傳統「照護代價」框架，透過63篇文獻的範圍回顧揭示道德困擾、同情疲勞等超越burnout核心成分的損害，並以人格環理論描繪其在專業認同形塑中的多層次運作。</p>
+          
+        <div class="pico-grid">
+          <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">醫學生</span></div>
+          <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">無（範圍回顧，納入63篇研究）</span></div>
+          <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">無對照組</span></div>
+          <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">學習代價（道德困擾、同情疲勞、替代性創傷等）與burnout、韌性在專業認同形塑中的交互作用模式</span></div>
+        </div>
+          <div class="card-footer">
+            <span class="tag">道德創傷</span><span class="tag">burnout</span><span class="tag">道德韌性</span><span class="tag">系統性回顧</span><span class="tag">醫療人員</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42307430/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div></div>
+
+  <div class="section"><div class="section-title"><span class="section-icon">📚</span>其他值得關注的文獻</div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🫀</span>
+            <span class="utility-mid utility-sm">中</span>
+          </div>
+          <h3>循環死後器官捐贈評估患者安寧緩和醫療的現有證據與最佳實踐：敘述性回顧</h3>
+          <p class="journal-source">Journal of Palliative Medicine</p>
+          <p>回顧安寧緩和醫療在潛在器官捐贈者中的角色，指出臨床團隊常因擔憂安寧症狀處理被誤用為加速死亡而產生道德困擾，並提出緩解策略框架。</p>
+          <div class="card-footer">
+            <span class="tag">道德創傷</span><span class="tag">醫療人員</span><span class="tag">系統性回顧</span><span class="tag">職場倫理</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42316827/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧠</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>急性精神科護理人員遺漏護理的經驗：描述性質性研究</h3>
+          <p class="journal-source">Issues in Mental Health Nursing</p>
+          <p>斯洛伐克精神科護理人員因人力短缺與資源不足導致遺漏治療性溝通與情緒支持，產生道德困擾與專業挫折感，凸顯關係性護理不應被視為可有可無。</p>
+          <div class="card-footer">
+            <span class="tag">道德創傷</span><span class="tag">醫療人員</span><span class="tag">質性研究</span><span class="tag">職場倫理</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42314185/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">⛪</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>以維護人類尊嚴為首要原則：NATO軍事牧師的預防性道德創傷工作</h3>
+          <p class="journal-source">Journal of Religion and Health</p>
+          <p>從烏克蘭全規模戰爭中軍事牧師的實務經驗出發，提出「人類尊嚴優先」作為NATO軍事牧師服務的統一性預防道德創傷戰略原則。</p>
+          <div class="card-footer">
+            <span class="tag">道德創傷</span><span class="tag">軍事/退伍軍人</span><span class="tag">靈性/宗教</span><span class="tag">道德修復</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42313353/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🕸️</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>揭開護理實習生工作異化的心理網絡：資源保存觀點與網絡分析</h3>
+          <p class="journal-source">PLOS ONE</p>
+          <p>以網絡分析識別出個人責任感、耗竭與次級創傷壓力為護理實習生工作異化的核心與橋接節點，為未來介入提供假設生成性的靶點。</p>
+          <div class="card-footer">
+            <span class="tag">道德創傷</span><span class="tag">burnout</span><span class="tag">醫療人員</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42308247/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💡</span>
+            <span class="utility-mid utility-sm">中</span>
+          </div>
+          <h3>立即決定！加護病房護理人員在進階心臟救命術中的道德困擾質性研究</h3>
+          <p class="journal-source">Nursing in Critical Care</p>
+          <p>21名加護病房護理人員在ACLS過程中因知識不足、法律義務、組織問題、團隊合作不佳及設備不足而經歷道德困擾，建議以案例討論與模擬訓練減輕之。</p>
+          <div class="card-footer">
+            <span class="tag">道德創傷</span><span class="tag">醫療人員</span><span class="tag">質性研究</span><span class="tag">職場倫理</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42273755/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">⚖️</span>
+            <span class="utility-mid utility-sm">中</span>
+          </div>
+          <h3>罪惡感作為結構性症狀：當代護理照護的倫理挑戰</h3>
+          <p class="journal-source">Holistic Nursing Practice</p>
+          <p>系統性文獻回顧揭示護理人員的罪惡感源於制度約束下的倫理失調而非個人失誤，呼籲將罪惡感重新概念化為系統性倫理功能障礙的指標。</p>
+          <div class="card-footer">
+            <span class="tag">道德創傷</span><span class="tag">羞恥/罪惡感</span><span class="tag">醫療人員</span><span class="tag">系統性回顧</span><span class="tag">職場倫理</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/40793761/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🤝</span>
+            <span class="utility-mid utility-sm">中</span>
+          </div>
+          <h3>以關懷科學革新前線領導力：副護理長實踐社群五年成果</h3>
+          <p class="journal-source">Nursing Administration Quarterly</p>
+          <p>Kaiser Permanente以Watson關懷理論為基礎的副護理長實踐社群五年成果，顯示第一年留任率提升26%、兩年內離職率降低50%，並增強道德韌性與心理安全感。</p>
+          <div class="card-footer">
+            <span class="tag">道德韌性</span><span class="tag">醫療人員</span><span class="tag">介入治療</span><span class="tag">burnout</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42214423/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧭</span>
+            <span class="utility-mid utility-sm">中</span>
+          </div>
+          <h3>加護病房護理人員倫理意識形態與道德韌性的關係</h3>
+          <p class="journal-source">Critical Care Nursing Quarterly</p>
+          <p>196名加護病房護理人員的橫斷面研究發現相對主義傾向者道德韌性顯著較高，建議單位可透過倫理諮詢與結構性 debriefing 支持理想主義者，並善用相對主義者的適應力。</p>
+          <div class="card-footer">
+            <span class="tag">道德韌性</span><span class="tag">醫療人員</span><span class="tag">職場倫理</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42202160/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🗣️</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>抵抗集體暴力：巴基斯坦什葉派穆斯林的團結話語建構</h3>
+          <p class="journal-source">The British Journal of Social Psychology</p>
+          <p>以話語心理學分析巴基斯坦什葉派穆斯林如何透過日常話語將悲傷轉化為集體能動性，展現語言作為道德修復與社會重建媒介的功能。</p>
+          <div class="card-footer">
+            <span class="tag">道德修復</span><span class="tag">質性研究</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42130067/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🩸</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>模仿暴力與戰時以巴器官捐贈</h3>
+          <p class="journal-source">Social Science & Medicine (1982)</p>
+          <p>以Girard模仿理論分析戰時以巴跨社群器官捐贈，揭示其同時作為跨越敵意邊界的道德修復機制與被視為背叛的邊界再製機制的雙重動態。</p>
+          <div class="card-footer">
+            <span class="tag">道德修復</span><span class="tag">難民/戰爭</span><span class="tag">背叛</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42085798/" target="_blank">PubMed →</a>
+          </div>
+        </div></div>
+
+  <div class="topic-section section"><div class="section-title"><span class="section-icon">📊</span>主題分佈</div>
+        <div class="topic-row">
+          <span class="topic-name">道德創傷</span>
+          <div class="topic-bar-bg"><div class="topic-bar" style="width:100%"></div></div>
+          <span class="topic-count">8</span>
+        </div>
+        <div class="topic-row">
+          <span class="topic-name">醫療人員</span>
+          <div class="topic-bar-bg"><div class="topic-bar" style="width:88%"></div></div>
+          <span class="topic-count">7</span>
+        </div>
+        <div class="topic-row">
+          <span class="topic-name">質性研究</span>
+          <div class="topic-bar-bg"><div class="topic-bar" style="width:75%"></div></div>
+          <span class="topic-count">6</span>
+        </div>
+        <div class="topic-row">
+          <span class="topic-name">PTSD</span>
+          <div class="topic-bar-bg"><div class="topic-bar" style="width:38%"></div></div>
+          <span class="topic-count">3</span>
+        </div>
+        <div class="topic-row">
+          <span class="topic-name">道德韌性</span>
+          <div class="topic-bar-bg"><div class="topic-bar" style="width:38%"></div></div>
+          <span class="topic-count">3</span>
+        </div>
+        <div class="topic-row">
+          <span class="topic-name">測量工具</span>
+          <div class="topic-bar-bg"><div class="topic-bar" style="width:25%"></div></div>
+          <span class="topic-count">2</span>
+        </div>
+        <div class="topic-row">
+          <span class="topic-name">背叛</span>
+          <div class="topic-bar-bg"><div class="topic-bar" style="width:25%"></div></div>
+          <span class="topic-count">2</span>
+        </div>
+        <div class="topic-row">
+          <span class="topic-name">系統性回顧</span>
+          <div class="topic-bar-bg"><div class="topic-bar" style="width:25%"></div></div>
+          <span class="topic-count">2</span>
+        </div>
+        <div class="topic-row">
+          <span class="topic-name">burnout</span>
+          <div class="topic-bar-bg"><div class="topic-bar" style="width:25%"></div></div>
+          <span class="topic-count">2</span>
+        </div>
+        <div class="topic-row">
+          <span class="topic-name">軍事/退伍軍人</span>
+          <div class="topic-bar-bg"><div class="topic-bar" style="width:25%"></div></div>
+          <span class="topic-count">2</span>
+        </div>
+        <div class="topic-row">
+          <span class="topic-name">職場倫理</span>
+          <div class="topic-bar-bg"><div class="topic-bar" style="width:25%"></div></div>
+          <span class="topic-count">2</span>
+        </div>
+        <div class="topic-row">
+          <span class="topic-name">羞恥/罪惡感</span>
+          <div class="topic-bar-bg"><div class="topic-bar" style="width:25%"></div></div>
+          <span class="topic-count">2</span>
+        </div>
+        <div class="topic-row">
+          <span class="topic-name">靈性/宗教</span>
+          <div class="topic-bar-bg"><div class="topic-bar" style="width:13%"></div></div>
+          <span class="topic-count">1</span>
+        </div>
+        <div class="topic-row">
+          <span class="topic-name">憂鬱症</span>
+          <div class="topic-bar-bg"><div class="topic-bar" style="width:13%"></div></div>
+          <span class="topic-count">1</span>
+        </div>
+        <div class="topic-row">
+          <span class="topic-name">社會工作</span>
+          <div class="topic-bar-bg"><div class="topic-bar" style="width:13%"></div></div>
+          <span class="topic-count">1</span>
+        </div>
+        <div class="topic-row">
+          <span class="topic-name">難民/戰爭</span>
+          <div class="topic-bar-bg"><div class="topic-bar" style="width:25%"></div></div>
+          <span class="topic-count">2</span>
+        </div>
+        <div class="topic-row">
+          <span class="topic-name">道德修復</span>
+          <div class="topic-bar-bg"><div class="topic-bar" style="width:38%"></div></div>
+          <span class="topic-count">3</span>
+        </div>
+        <div class="topic-row">
+          <span class="topic-name">介入治療</span>
+          <div class="topic-bar-bg"><div class="topic-bar" style="width:13%"></div></div>
+          <span class="topic-count">1</span>
+        </div>
+        <div class="topic-row">
+          <span class="topic-name">制度性背叛</span>
+          <div class="topic-bar-bg"><div class="topic-bar" style="width:13%"></div></div>
+          <span class="topic-count">1</span>
+        </div></div>
+
+  <div class="keywords-section section"><div class="section-title"><span class="section-icon">🏷️</span>關鍵字</div><div class="keywords"><span class="keyword">DSM-5-TR Z代碼</span><span class="keyword">道德創傷鑑別診斷</span><span class="keyword">測量工具驗證</span><span class="keyword">背叛感縱向追蹤</span><span class="keyword">敘事認同</span><span class="keyword">多層級緩解策略</span><span class="keyword">學習代價</span><span class="keyword">社會工作者道德創傷</span></div></div>
+
+  <div class="footer-links">
+    <div class="footer-links-grid">
+      <a href="https://www.leepsyclinic.com/" class="footer-link-card" target="_blank">
+        <span class="footer-link-icon">🏥</span>
+        <span class="footer-link-text"><span class="footer-link-title">李政洋身心診所首頁</span><span class="footer-link-desc">專業身心科門診服務</span></span>
+        <span class="footer-link-arrow">→</span>
+      </a>
+      <a href="https://blog.leepsyclinic.com/" class="footer-link-card" target="_blank">
+        <span class="footer-link-icon">📬</span>
+        <span class="footer-link-text"><span class="footer-link-title">訂閱電子報</span><span class="footer-link-desc">接收最新心理健康資訊</span></span>
+        <span class="footer-link-arrow">→</span>
+      </a>
+      <a href="https://buymeacoffee.com/CYlee" class="footer-link-card" target="_blank">
+        <span class="footer-link-icon">☕</span>
+        <span class="footer-link-text"><span class="footer-link-title">Buy Me a Coffee</span><span class="footer-link-desc">支持此計畫持續運作</span></span>
+        <span class="footer-link-arrow">→</span>
+      </a>
+    </div>
+  </div>
+
+  <footer>
+    <span>資料來源：PubMed &middot; 分析模型：glm-5-turbo</span>
+    <span><a href="https://github.com/u8901006/moral-injury">GitHub</a></span>
+  </footer>
+</div>
+</body>
+</html>
