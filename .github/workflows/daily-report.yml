@@ -57,10 +57,38 @@ jobs:
             echo "No papers found"
           fi
 
-      - name: Generate report with Zhipu AI
-        env:
-          ZHIPU_API_KEY: ${{ secrets.ZHIPU_API_KEY }}
+      - name: Configure NVIDIA Nemotron backend
         run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          p = Path("src/generate_report.mjs")
+          s = p.read_text(encoding="utf-8")
+          s = s.replace("https://open.bigmodel.cn/api/coding/paas/v4", "https://integrate.api.nvidia.com/v1")
+          s = re.sub(
+              r'const MODEL_CHAIN = \[[^\n]+\];',
+              'const MODEL_CHAIN = ["nvidia/nemotron-3-super-120b-a12b", "nvidia/nemotron-3-nano-30b-a3b"];',
+              s,
+          )
+          s = re.sub(r"const MAX_TOKENS = [0-9_]+;", "const MAX_TOKENS = 16384;", s)
+          s = s.replace("temperature: 0.3", "temperature: 1.0")
+          s = s.replace("top_p: 0.9", "top_p: 0.95")
+          marker = "max_tokens: MAX_TOKENS,"
+          if marker in s and "chat_template_kwargs" not in s:
+              s = s.replace(
+                  marker,
+                  marker + "\n            chat_template_kwargs: { enable_thinking: false },",
+                  1,
+              )
+          p.write_text(s, encoding="utf-8")
+          PY
+
+      - name: Generate report with NVIDIA Nemotron
+        env:
+          NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
+        run: |
+          test -n "$NVIDIA_API_KEY" || { echo "::error::Missing NVIDIA_API_KEY repository secret"; exit 1; }
           node src/generate_report.mjs \
             --input papers.json \
             --output "docs/moral-injury-${{ steps.date.outputs.target }}.html" \
@@ -81,8 +109,9 @@ jobs:
           git push
 
       - name: Summary
+        if: always()
         run: |
           echo "### 📄 Moral Injury Daily Report" >> "$GITHUB_STEP_SUMMARY"
           echo "**Date:** ${{ steps.date.outputs.target }}" >> "$GITHUB_STEP_SUMMARY"
-          echo "**Papers analyzed:** ${{ steps.papers.outputs.count }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "**Papers analyzed:** ${{ steps.papers.outputs.count || '0' }}" >> "$GITHUB_STEP_SUMMARY"
           echo "**Report:** [moral-injury-${{ steps.date.outputs.target }}.html](https://u8901006.github.io/moral-injury/moral-injury-${{ steps.date.outputs.target }}.html)" >> "$GITHUB_STEP_SUMMARY"
