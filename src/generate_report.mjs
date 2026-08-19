@@ -4,9 +4,9 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const API_BASE = process.env.ZHIPU_API_BASE || "https://open.bigmodel.cn/api/coding/paas/v4";
-const MODEL_CHAIN = ["glm-5-turbo", "glm-4.7", "glm-4.7-flash"];
-const MAX_TOKENS = 50000;
+const API_BASE = (process.env.NVIDIA_API_BASE || "https://integrate.api.nvidia.com/v1").replace(/\/+$/, "");
+const MODEL_CHAIN = ["nvidia/nemotron-3-super-120b-a12b", "nvidia/nemotron-3-nano-30b-a3b"];
+const MAX_TOKENS = 16384;
 const TIMEOUT_MS = 480000;
 const MAX_RETRIES = 3;
 
@@ -94,7 +94,67 @@ function safeParseJson(text) {
   }
 }
 
-async function callZhipuAPI(apiKey, papersData) {
+function delay(ms) {
+  return new Promise((r) => setTimeout(r, ms));
+}
+
+function backoffMs(attempt) {
+  return Math.min(15 * attempt, 60) * 1000;
+}
+
+async function callModelAPI(apiKey, model, prompt) {
+  const resp = await fetch(`${API_BASE}/chat/completions`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      model,
+      messages: [
+        { role: "system", content: SYSTEM_PROMPT },
+        { role: "user", content: prompt },
+      ],
+      temperature: 1.0,
+      top_p: 0.95,
+      max_tokens: MAX_TOKENS,
+      chat_template_kwargs: { enable_thinking: false },
+    }),
+    signal: AbortSignal.timeout(TIMEOUT_MS),
+  });
+
+  const bodyText = await resp.text().catch(() => "");
+
+  if (resp.status === 429) {
+    const retryAfter = parseInt(resp.headers.get("retry-after") || "", 10);
+    throw new Error(`RATE_LIMIT:${Number.isFinite(retryAfter) && retryAfter > 0 ? retryAfter : 60}`);
+  }
+
+  if (resp.status === 401 || resp.status === 403) {
+    throw new Error(`AUTH_FAILED:${resp.status}:${bodyText.slice(0, 200)}`);
+  }
+
+  if (!resp.ok) {
+    throw new Error(`HTTP_${resp.status}:${bodyText.slice(0, 200)}`);
+  }
+
+  let data;
+  try {
+    data = JSON.parse(bodyText);
+  } catch {
+    throw new Error("INVALID_JSON_RESPONSE");
+  }
+  return data.choices?.[0]?.message?.content?.trim() || "";
+}
+
+function isNetworkError(e) {
+  return e.name === "TimeoutError"
+    || e.name === "AbortError"
+    || e.name === "TypeError"
+    || /ETIMEDOUT|ENOTFOUND|ECONNRESET|ECONNREFUSED|fetch failed|network/i.test(e.message);
+}
+
+async function callNVIDIA(apiKey, papersData) {
   const papersText = JSON.stringify(papersData.papers || [], null, 2);
   const paperCount = papersData.count || 0;
   const dateStr = papersData.date || new Date().toISOString().slice(0, 10);
@@ -155,51 +215,19 @@ ${papersText}
   for (const model of MODEL_CHAIN) {
     for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
       try {
-        console.error(`[INFO] Trying ${model} (attempt ${attempt + 1})...`);
+        console.error(`[INFO] Trying ${model} (attempt ${attempt + 1}/${MAX_RETRIES})...`);
 
-        const resp = await fetch(`${API_BASE}/chat/completions`, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${apiKey}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            model,
-            messages: [
-              { role: "system", content: SYSTEM_PROMPT },
-              { role: "user", content: prompt },
-            ],
-            temperature: 0.3,
-            top_p: 0.9,
-            max_tokens: MAX_TOKENS,
-          }),
-          signal: AbortSignal.timeout(TIMEOUT_MS),
-        });
-
-        if (resp.status === 429) {
-          const wait = 60000 * (attempt + 1);
-          console.error(`[WARN] Rate limited, waiting ${wait / 1000}s...`);
-          await new Promise((r) => setTimeout(r, wait));
+        const text = await callModelAPI(apiKey, model, prompt);
+        if (!text) {
+          console.error(`[WARN] Empty response from ${model} (attempt ${attempt + 1}), retrying...`);
+          await delay(backoffMs(attempt + 1));
           continue;
         }
 
-        if (!resp.ok) {
-          const errText = await resp.text().catch(() => "");
-          console.error(`[ERROR] HTTP ${resp.status}: ${errText.slice(0, 200)}`);
-          if (resp.status >= 500) {
-            await new Promise((r) => setTimeout(r, 5000));
-            continue;
-          }
-          break;
-        }
-
-        const data = await resp.json();
-        const content = data.choices?.[0]?.message?.content || "";
-
-        const result = safeParseJson(content);
+        const result = safeParseJson(text);
         if (!result) {
-          console.error(`[WARN] JSON parse failed on attempt ${attempt + 1}`);
-          if (attempt < MAX_RETRIES - 1) await new Promise((r) => setTimeout(r, 5000));
+          console.error(`[WARN] JSON parse failed on attempt ${attempt + 1}/${MAX_RETRIES}, retrying...`);
+          await delay(backoffMs(attempt + 1));
           continue;
         }
 
@@ -208,12 +236,27 @@ ${papersText}
         );
         return { ...result, _model: model };
       } catch (err) {
-        if (err.name === "TimeoutError") {
-          console.error(`[WARN] ${model} timed out (attempt ${attempt + 1})`);
-        } else {
-          console.error(`[ERROR] ${model} failed: ${err.message}`);
+        if (err.message.startsWith("RATE_LIMIT:")) {
+          const base = parseInt(err.message.split(":")[1], 10);
+          const wait = Math.min(base * (attempt + 1), 180);
+          console.error(`[WARN] Rate limited (429), waiting ${wait}s...`);
+          await delay(wait * 1000);
+          continue;
         }
-        if (attempt < MAX_RETRIES - 1) await new Promise((r) => setTimeout(r, 5000));
+        if (err.message.startsWith("AUTH_FAILED:")) {
+          console.error(`[ERROR] Authentication failed: ${err.message}. Check that the NVIDIA_API_KEY repository secret is valid.`);
+          return null;
+        }
+        if (err.message.startsWith("HTTP_4")) {
+          console.error(`[ERROR] ${model}: ${err.message}`);
+          break;
+        }
+        if (isNetworkError(err)) {
+          console.error(`[WARN] Network/timeout error on attempt ${attempt + 1}: ${err.message}`);
+        } else {
+          console.error(`[ERROR] ${model} failed on attempt ${attempt + 1}: ${err.message}`);
+        }
+        await delay(backoffMs(attempt + 1));
       }
     }
   }
@@ -232,7 +275,7 @@ function generateHtml(analysis) {
   const allPapers = analysis.all_papers || [];
   const keywords = analysis.keywords || [];
   const topicDist = analysis.topic_distribution || {};
-  const modelUsed = analysis._model || "glm-5-turbo";
+  const modelUsed = analysis._model || "nvidia/nemotron-3-super-120b-a12b";
 
   const topPicksHtml = topPicks
     .map((p) => {
@@ -394,7 +437,7 @@ function generateHtml(analysis) {
       <div class="header-meta">
         <span class="badge badge-date">📅 ${dateDisplay}（週${weekday}）</span>
         <span class="badge badge-count">📊 ${totalCount} 篇文獻</span>
-        <span class="badge badge-source">Powered by PubMed + Zhipu AI</span>
+        <span class="badge badge-source">Powered by PubMed + NVIDIA Nemotron</span>
       </div>
     </div>
   </header>
@@ -443,9 +486,9 @@ function generateHtml(analysis) {
 
 async function main() {
   const opts = parseArgs();
-  const apiKey = process.env.ZHIPU_API_KEY || "";
+  const apiKey = process.env.NVIDIA_API_KEY || "";
   if (!apiKey) {
-    console.error("[ERROR] ZHIPU_API_KEY environment variable is required");
+    console.error("[ERROR] NVIDIA_API_KEY environment variable is required");
     process.exit(1);
   }
   if (!opts.output) {
@@ -472,7 +515,7 @@ async function main() {
       _model: "none",
     };
   } else {
-    analysis = await callZhipuAPI(apiKey, papersData);
+    analysis = await callNVIDIA(apiKey, papersData);
     if (!analysis) {
       console.error("[ERROR] Analysis failed, cannot generate report");
       process.exit(1);
